@@ -72,9 +72,21 @@ class Forms extends CI_Model
 	
 	public function get_form($form_id)
 	{		
-		$query = $this->db->query("SELECT * FROM q_".$form_id." ORDER BY position");
-		return $query->result_array();		 	
+		$query = $this->db->query("SELECT * FROM q_".$form_id." ORDER BY position"); 
+		$form = $query->result_array();
+				
+		return $form;
 	}
+	
+	public function get_details($form_id)
+	{		
+		$query = $this->db->query("SELECT details FROM forms WHERE id = ".$form_id);
+		$details = $query->result_array();
+		$details = $details[0];
+		
+		return $details;
+	}
+	
 	
 	public function get_answers($form_id)
 	{		
@@ -96,7 +108,7 @@ class Forms extends CI_Model
 		return $query->result_array();		 	
 	}
 	
-	public function add_form($form_id)
+	public function add_form($form_name, $form_details)
 	{
 		// On récupère l'id max
 		$req = $this->db->query('SELECT MAX(ID) FROM forms');
@@ -105,7 +117,7 @@ class Forms extends CI_Model
 		$new_id = $max_id + 1;
 				
 		// On ajoute dans la table forms
-		$this->db->query('INSERT INTO forms(id, intitule) VALUES('.$new_id.', "'.$form_id.'")');
+		$this->db->query('INSERT INTO forms(id, intitule, details) VALUES('.$new_id.', "'.$form_name.'", "'.$form_details.'")');
 		
 		// Création de la table q_ du formulaire
 		$sql = "CREATE TABLE q_".$new_id." (

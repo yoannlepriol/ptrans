@@ -63,8 +63,9 @@ class Form extends CI_Controller
 	
 	public function ajouter()
 	{		
-		$form_id = $this->input->post('new_form');		
-		$this->Forms->add_form($form_id);		
+		$form_name = $this->input->post('new_form');
+		$form_details = $this->input->post('details');
+		$this->Forms->add_form($form_name, $form_details);		
 		redirect('Form');
 	}
 	
@@ -112,7 +113,8 @@ class Form extends CI_Controller
 	public function repondre($form_id)
 	{			
 		$form = $this->Forms->get_form($form_id);
-		$data = array('form_id' => $form_id, 'form' => $form);
+		$details = $this->Forms->get_details($form_id);
+		$data = array('form_id' => $form_id, 'form' => $form, 'details' => $details);
 		$data['nav_bar'] = $this->load->view('Nav_bar');	
 		$this->load->view('Answer_form', $data);		
 	}

@@ -8,6 +8,7 @@
     <title>Barnsdeal</title>
     <link href="<?php echo site_url('assets/css/bootstrap.css'); ?>" rel="oldest stylesheet">
 	<link href="<?php echo site_url('assets/css/full-slider.css'); ?>" rel="oldest stylesheet">
+	<style> body { padding-top: 70px; } </style>
 </head>
 
 <body class="form">
@@ -15,7 +16,7 @@
 	<?php $nav_bar ?>
 	
 	<?php 
-
+	
 	function displayQuestion($question, $form_id){
 				
 			echo '<div class="question" id="div_'.$question['id'].'">';
@@ -152,9 +153,11 @@
           <div class="carousel-item active" style="background-color: #343a40" id="carousel_0">
             <div class="text_form">
               <h3><?php echo $form_id; ?></h3>
-              <p>Ceci est une page d'introduction permettant d'expliquer l'intérêt de ce questionnaire [...]</p>
+              <p><?php echo $details['details']; ?></p>
             </div>
           </div>
+		  
+		 
 		  
 <?php 	 foreach ($form as $question){ 
 			echo '<div class="carousel-item" style="background-color: #343a40" id="carousel_'.$question['position'].'"><div>';

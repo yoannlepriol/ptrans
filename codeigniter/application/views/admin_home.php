@@ -24,6 +24,9 @@ echo '<div class="container" style="padding-top: 30px">';
 	$data = array('name' => 'new_form', 'placeholder' => 'Nom du questionnaire');
 	echo form_input($data);
 	
+	$data = array('name' => 'details', 'rows' => 10, 'cols' => 50, 'placeholder' => 'Expliquez l\'intérêt de ce questionnaire pour le répondant');
+	echo form_textarea($data);
+	
 	echo form_submit('submit', 'Confirmer');
 	echo form_close();
 ?>
