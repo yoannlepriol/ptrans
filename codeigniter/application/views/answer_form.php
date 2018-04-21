@@ -49,14 +49,17 @@
 				echo form_label($question['intitule'], 'div_'.$question['id'], $attributes);
 				
 				$array_choix = ['choix1','choix2','choix3','choix4','choix5','choix6','choix7','choix8','choix9','choix10'];
+				
+				$i = 0;
 				foreach($array_choix as $element)
 				{
 					if ($question[$element] != "") // To-Do : Afficher les résultats sur plusieurs lignes
 					{
-						$data_checkbox = array('name' => $question['id'].'_'.$question[$element], 'value' => 1);
+						$data_checkbox = array('name' => $question['id'].'_'.$i, 'value' => 1);
 						echo form_checkbox($data_checkbox);
 						$attributes = array('class' => 'label_checkbox');
-						echo form_label($question[$element], $question['id'].'_'.$question[$element], $attributes);
+						echo form_label($question[$element], $question['id'].'_'.$i, $attributes);
+						$i = $i+1;
 					}
 				}
 				
@@ -71,14 +74,17 @@
 				echo form_label($question['intitule'], 'div_'.$question['id'], $attributes);
 				
 				$array_choix = ['choix1','choix2','choix3','choix4','choix5','choix6','choix7','choix8','choix9','choix10'];
+				
+				$i = 0;
 				foreach($array_choix as $element)
 				{
 					if ($question[$element] != "")
 					{	
-						$data_radio = array('name' => $question['id'].'_', 'value' => $question[$element], 'id' => $question['id'].'_'.$question[$element]);
+						$data_radio = array('name' => $question['id'].'_', 'value' => $i, 'id' => $question['id'].'_'.$i);
 						echo form_radio($data_radio);
 						$attributes = array('class' => 'label_checkbox');
-						echo form_label($question[$element], $question['id'].'_'.$question[$element], $attributes);
+						echo form_label($question[$element], $question['id'].'_'.$i, $attributes);
+						$i = $i+1;
 					}
 				}
 				
