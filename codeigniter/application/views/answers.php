@@ -36,7 +36,7 @@ foreach($users as $user)
 echo form_dropdown('select', $options, NULL);
 
 
-$data = array('form_name' => $form_name, 'options' => $options);
+$data = array('form_id' => $form_id, 'options' => $options);
 
 echo form_hidden($data);
 

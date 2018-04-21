@@ -16,7 +16,7 @@
 	
 	<?php 
 
-	function displayQuestion($question, $form_name){
+	function displayQuestion($question, $form_id){
 				
 			echo '<div class="question" id="div_'.$question['id'].'">';
 						
@@ -151,20 +151,20 @@
 			         
           <div class="carousel-item active" style="background-color: #343a40" id="carousel_0">
             <div class="text_form">
-              <h3><?php echo $form_name; ?></h3>
+              <h3><?php echo $form_id; ?></h3>
               <p>Ceci est une page d'introduction permettant d'expliquer l'intérêt de ce questionnaire [...]</p>
             </div>
           </div>
 		  
 <?php 	 foreach ($form as $question){ 
 			echo '<div class="carousel-item" style="background-color: #343a40" id="carousel_'.$question['position'].'"><div>';
-			displayQuestion($question, $form_name);													
+			displayQuestion($question, $form_id);													
 			echo '</div></div>'; 
 		  } ?>
 		  		  
 		 <div class="carousel-item" style="background-color: #343a40" id="carousel_<?php echo $nb_slides; ?>">
             <div class="carousel-caption d-none d-md-block"> <h3>Last slide</h3> <p>Thank you for answering this form.</p> 
-			<?php echo '<input type="hidden" name="form_name" value="'.$form_name.'">
+			<?php echo '<input type="hidden" name="form_id" value="'.$form_id.'">
 			<input type="submit" value="Confirmer"/></form>'; ?> 
 			
 			</div>

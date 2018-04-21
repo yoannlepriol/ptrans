@@ -18,7 +18,7 @@ class Forms extends CI_Model
 	
 		foreach($all_forms as $form)
 		{
-			$form = str_replace("q_", "", $form['table_name']);		
+			$form = $form['table_name'];		
 			$query = $this->db->query("SELECT ".$form." FROM users WHERE id = ".$_SESSION['user_id']);
 			$query = $query->result_array();
 			$query = $query[0][$form];
@@ -28,6 +28,22 @@ class Forms extends CI_Model
 		return $user_forms;
 	}
 	
+	public function get_forms_name($forms)
+	{	
+		$forms_name = array();
+	
+		foreach($forms as $form)
+		{		
+			$form = str_replace("q_", "", $form);	
+			$query = $this->db->query("SELECT intitule FROM forms WHERE id = ".$form);
+			$query = $query->result_array();
+			$query = $query[0]['intitule'];
+			$forms_name[$form] = $query;
+		}
+			
+		return $forms_name;
+	}
+	
 	public function get_filled_forms($forms)
 	{
 		$filled_forms = array();
@@ -35,6 +51,7 @@ class Forms extends CI_Model
 		foreach($forms as $form)
 		{
 			$form_is_filled = true;
+			$form = str_replace("q_", "", $form);
 			$query = $this->db->query("SELECT * FROM r_".$form." WHERE id = ".$_SESSION['user_id']);
 			$query = $query->result_array();
 			if(isset($query[0]))
@@ -53,21 +70,21 @@ class Forms extends CI_Model
 		return $filled_forms;
 	}
 	
-	public function get_form($form_name)
+	public function get_form($form_id)
 	{		
-		$query = $this->db->query("SELECT * FROM q_".$form_name." ORDER BY position");
+		$query = $this->db->query("SELECT * FROM q_".$form_id." ORDER BY position");
 		return $query->result_array();		 	
 	}
 	
-	public function get_answers($form_name)
+	public function get_answers($form_id)
 	{		
-		$query = $this->db->query("SELECT * FROM r_".$form_name." ORDER BY id");
+		$query = $this->db->query("SELECT * FROM r_".$form_id." ORDER BY id");
 		return $query->result_array();		 	
 	}
 	
-	public function get_users($form_name)
+	public function get_users($form_id)
 	{		
-		$query = $this->db->query('SELECT id FROM users WHERE '.$form_name.' = 1 AND privilege = "user" ORDER BY id');
+		$query = $this->db->query('SELECT id FROM users WHERE '.$form_id.' = 1 AND privilege = "user" ORDER BY id');
 		return $query->result_array();		 	
 	}
 	
@@ -75,19 +92,27 @@ class Forms extends CI_Model
 	{		
 		$select = $data['select'];
 	
-		$query = $this->db->query('SELECT * FROM r_'.$data['form_name'].' WHERE id = '.$data['options'][$select]);
+		$query = $this->db->query('SELECT * FROM r_'.$data['form_id'].' WHERE id = '.$data['options'][$select]);
 		return $query->result_array();		 	
 	}
 	
-	public function add_form($form_name)
+	public function add_form($form_id)
 	{
+		// On récupère l'id max
+		$req = $this->db->query('SELECT MAX(ID) FROM forms');
+		$req = $req->result_array();
+		$max_id = $req[0]['MAX(ID)'];
+		$new_id = $max_id + 1;
+				
+		// On ajoute dans la table forms
+		$this->db->query('INSERT INTO forms(id, intitule) VALUES('.$new_id.', "'.$form_id.'")');
 		
 		// Création de la table q_ du formulaire
-		$sql = "CREATE TABLE q_".$form_name." (
+		$sql = "CREATE TABLE q_".$new_id." (
 				id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				intitule VARCHAR(120), 
 				type VARCHAR(30), 
-				choix1 VARCHAR(60), 
+				choix1 VARCHAR(60), 	
 				choix2 VARCHAR(60), 
 				choix3 VARCHAR(60), 
 				choix4 VARCHAR(60), 
@@ -106,7 +131,7 @@ class Forms extends CI_Model
 		
 		
 		// Création de la table r_ du formulaire
-		$sql = "CREATE TABLE r_".$form_name." (
+		$sql = "CREATE TABLE r_".$new_id." (
 				id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY
 				)";
 		
@@ -114,29 +139,29 @@ class Forms extends CI_Model
 		
 		
 		// Ajouter colomne dans la table users
-		$this->db->query('ALTER TABLE users ADD '.$form_name.' BOOLEAN default 1'); // To-Do : attribuer les questionnaires aux bons utilisateurs
+		$this->db->query('ALTER TABLE users ADD q_'.$new_id.' BOOLEAN default 1'); // To-Do : attribuer les questionnaires aux bons utilisateurs
 	}
 	
 	
-	public function delete_form($form_name)
+	public function delete_form($form_id)
 	{
+		// On supprime dans la table forms
+		$this->db->query("DELETE FROM forms WHERE id = ".$form_id);
 		
 		// Suppression de la table q_ du formulaire
-		$sql = "DROP TABLE q_".$form_name;
-		
-		$this->db->query($sql);
-		
-		
+		$this->db->query("DROP TABLE q_".$form_id);
+				
 		// Suppression de la table r_ du formulaire
-		$sql = "DROP TABLE r_".$form_name;
+		$this->db->query("DROP TABLE r_".$form_id);
 		
-		$this->db->query($sql);
+		// Suppression de la table users
+		$this->db->query("ALTER TABLE users DROP COLUMN q_".$form_id);
 	}
 	
 	
 	public function add_question($data_question)
 	{
-		$table = $data_question['form_name'];
+		$table = $data_question['form_id'];
 		
 		// Permet de supprimer les champs réponses non utilisés
 		if(isset($data_question["mytext"]) && is_array($data_question["mytext"])){
@@ -246,35 +271,35 @@ class Forms extends CI_Model
 	
 	
 	
-	public function delete_question($form_name, $id_delete)
+	public function delete_question($form_id, $id_delete)
 	{
 		// On récupère la position de la question
-		$req = $this->db->query("SELECT position FROM q_".$form_name." WHERE id = ".$id_delete);
+		$req = $this->db->query("SELECT position FROM q_".$form_id." WHERE id = ".$id_delete);
 		$req = $req->result_array();
 		$position = $req[0]['position'];
 		
 		// Supprimer de la table q_
-		$this->db->query("DELETE FROM q_".$form_name." WHERE id = ".$id_delete);
+		$this->db->query("DELETE FROM q_".$form_id." WHERE id = ".$id_delete);
 		
 		// Supprimer de la table r_
-		$req = $this->db->query("SELECT column_name FROM information_schema.columns WHERE table_name = 'r_".$form_name."' AND column_name LIKE '".$id_delete."_%'");
+		$req = $this->db->query("SELECT column_name FROM information_schema.columns WHERE table_name = 'r_".$form_id."' AND column_name LIKE '".$id_delete."_%'");
 		$req = $req->result_array();
 		
 		foreach($req as $e)
 		{
-			$this->db->query("ALTER TABLE r_".$form_name." DROP COLUMN ".$e['column_name']);
+			$this->db->query("ALTER TABLE r_".$form_id." DROP COLUMN ".$e['column_name']);
 		}
 		
 		// On réorganise les positions dans la table q_
-		$req = $this->db->query("SELECT id FROM q_".$form_name." WHERE position > ".$position);
+		$req = $this->db->query("SELECT id FROM q_".$form_id." WHERE position > ".$position);
 		$req = $req->result_array();
 		
 		foreach($req as $e)
 		{
-			$pos = $this->db->query("SELECT position FROM q_".$form_name." WHERE id = ".$e['id']);
+			$pos = $this->db->query("SELECT position FROM q_".$form_id." WHERE id = ".$e['id']);
 			$pos = $pos->result_array();
 			$pos = $pos[0]['position']-1;					
-			$this->db->query("UPDATE q_".$form_name." SET position = ".$pos." WHERE id = ".$e['id']);
+			$this->db->query("UPDATE q_".$form_id." SET position = ".$pos." WHERE id = ".$e['id']);
 		}
 	}
 	
@@ -282,7 +307,7 @@ class Forms extends CI_Model
 	
 	public function answer_question($answer_data)
 	{
-		$table = $answer_data['form_name'];
+		$table = $answer_data['form_id'];
 		$user_id = $_SESSION['user_id'];
 		$id_question = $answer_data['id_question'];
 		
@@ -362,7 +387,7 @@ class Forms extends CI_Model
 	
 	public function move_question($move_data)
 	{
-		$table = $move_data['form_name'];
+		$table = $move_data['form_id'];
 		$old_position = $move_data['old_position'];
 		$new_position = $move_data['new_position'];
 		$id = $move_data['id_move'];

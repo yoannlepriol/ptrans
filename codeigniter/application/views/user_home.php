@@ -17,29 +17,32 @@
 
 <?php 
 
-	echo '<div class="container" style="padding-top: 30px">';
+	echo '<div class="container" style="padding-top: 30px;">';
 	echo '<div class="row">';
 
 	$position = 0;
-
 	
-foreach ($forms as $form)
+	$forms_id = array_keys($forms);
+	
+for ($i = 0; $i < count($forms_id); $i++)
 {	
+	$form_id = $forms_id[$i];
+	$form_name = $forms[$form_id];
 	$position = $position + 1;
 	if($position == 5){ $position = 0; }
 	
 	echo '<div class="col-md-3" style="padding-bottom: 15px; padding-top: 15px;">';
 	
-	if(in_array($form, $filled_forms)){ echo '<div class="card my_form" style="background-color: green !important;">'; }
+	if(in_array($form_id, $filled_forms)){ echo '<div class="card my_form" style="background-color: green !important;">'; }
 	else { echo '<div class="card my_form" style="background-color: orange !important;">'; }
 		
 	echo '<div class="form_name">';
-	echo $form; 
+	echo $form_name; 
 	echo '</div>';
 	
 	// Bouton pour répondre au questionnaire
-	echo form_open('Form/repondre/'.$form);
-	$data = array('form' => $form);
+	echo form_open('Form/repondre/'.$form_id);
+	$data = array('form' => $form_id);
 	echo form_hidden($data);
 	
 	$data = array('class' => 'button button-1 button-1a');

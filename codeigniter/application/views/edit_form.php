@@ -64,7 +64,7 @@
 						
 			</br></br>
 						
-			<input type="hidden" name="form_name" value="<?php echo $form_name ?>">
+			<input type="hidden" name="form_id" value="<?php echo $form_id ?>">
 			
 			<input type="submit" value="Valider"/>
 
@@ -84,7 +84,7 @@
 		echo form_open('Form/supprimer_question');
 			$data = array(
 			'id_delete' => $question['id'],
-			'form_name' => $form_name
+			'form_id' => $form_id
 			);
 		echo form_hidden($data);
 		echo form_submit('submit', 'Supprimer');
@@ -94,7 +94,7 @@
 		echo form_open('Form/deplacer_question');
 		$data = array('name' => 'new_position', 'placeholder' => 'Position');
 		echo form_input($data);	
-		$data = array('id_move' => $question['id'], 'form_name' => $form_name, 'old_position' => $question['position']);
+		$data = array('id_move' => $question['id'], 'form_id' => $form_id, 'old_position' => $question['position']);
 		echo form_hidden($data);
 		echo form_submit('submit', 'Déplacer');
 		echo form_close();
