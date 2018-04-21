@@ -90,7 +90,7 @@ class Form extends CI_Controller
 		$data_question = $this->input->post();
 		$form_id = $data_question['form_id'];
 		$this->Forms->add_question($data_question);		
-		$this->modifier($form_id);
+		$this->modifier($form_id); // Doublon ?
 		redirect('Form/modifier/'.$form_id);
 	}
 	

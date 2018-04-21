@@ -244,7 +244,7 @@ class Forms extends CI_Model
 					if ($data_question["mytext"][$i] != '')
 					{						
 						$data_question["mytext"][$i] = str_replace(' ', '_', $data_question["mytext"][$i]);							
-						$this->db->query('ALTER TABLE r_'.$table.' ADD '.$new_id.'_'.$data_question["mytext"][$i].' BOOLEAN');
+						$this->db->query('ALTER TABLE r_'.$table.' ADD '.$new_id.'_'.$i.' BOOLEAN');
 					}
 				}
 			}				  			
@@ -259,7 +259,7 @@ class Forms extends CI_Model
 					if ($data_question["mytext"][$i] != '')
 					{						
 						$data_question["mytext"][$i] = str_replace(' ', '_', $data_question["mytext"][$i]);							
-						$this->db->query('ALTER TABLE r_'.$table.' ADD '.$new_id.'_'.$data_question["mytext"][$i].' BOOLEAN');
+						$this->db->query('ALTER TABLE r_'.$table.' ADD '.$new_id.'_'.$i.' BOOLEAN');
 					}
 				}
 			}				  			
