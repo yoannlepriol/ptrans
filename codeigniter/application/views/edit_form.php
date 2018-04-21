@@ -48,14 +48,14 @@
 
 			</br>
 			
-			<div id="choix_multiple">
+			<div id="choix_multiple" style="display: none">
 				<div class="input_fields_wrap">
 					<button class="add_field_button">Ajouter des champs</button>
 					<div><input type="text" name="mytext[]"></div>
 				</div>
 			</div>
 			
-			<div id="echelle">
+			<div id="echelle" style="display: none">
 				<label>Signification du minimum</label></br>	
 				<input type="text" name="sens_min"></br></br>
 				<label>Signification du maximum</label></br>	
