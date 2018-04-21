@@ -8,7 +8,6 @@
     <title>Barnsdeal</title>
     <link href="<?php echo site_url('assets/css/bootstrap.css'); ?>" rel="oldest stylesheet">
 	<link href="<?php echo site_url('assets/css/full-slider.css'); ?>" rel="oldest stylesheet">
-	<style> body { padding-top: 70px; } </style>
 </head>
 
 <body class="form">
