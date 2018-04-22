@@ -8,6 +8,7 @@ class Form extends CI_Controller
 		parent::__construct();
 		$this->load->helper('Form');
 		$this->load->model('Forms');
+		$this->load->model('Questions');
 	}
 	
 	public function index()
@@ -89,7 +90,7 @@ class Form extends CI_Controller
 	{	
 		$data_question = $this->input->post();
 		$form_id = $data_question['form_id'];
-		$this->Forms->add_question($data_question);		
+		$this->Questions->add_question($data_question);		
 		$this->modifier($form_id); // Doublon ?
 		redirect('Form/modifier/'.$form_id);
 	}
@@ -98,7 +99,7 @@ class Form extends CI_Controller
 	{	
 		$id_delete = $this->input->post('id_delete');
 		$form_id = $this->input->post('form_id');		
-		$this->Forms->delete_question($form_id, $id_delete);	
+		$this->Questions->delete_question($form_id, $id_delete);	
 		redirect('Form/modifier/'.$form_id);		
 	}
 	
@@ -106,7 +107,15 @@ class Form extends CI_Controller
 	{	
 		$move_data = $this->input->post();
 		$form_id = $this->input->post('form_id');
-		$this->Forms->move_question($move_data);
+		$this->Questions->move_question($move_data);
+		redirect('Form/modifier/'.$form_id);
+	}
+	
+	public function modifier_details()
+	{	
+		$new_details = $this->input->post('details');
+		$form_id = $this->input->post('form_id');
+		$this->Forms->modify_details($form_id, $new_details);
 		redirect('Form/modifier/'.$form_id);
 	}
 	
@@ -126,7 +135,7 @@ class Form extends CI_Controller
 		
 		var_dump($answer_data);
 		
-		$data = $this->Forms->alter_data($answer_data);
+		$data = $this->Questions->alter_data($answer_data);
 		
 		$ids = array_keys($data);
 		for ($i = 0; $i < count($ids); $i++)
@@ -135,7 +144,7 @@ class Form extends CI_Controller
 			$answer = $data[$id];
 			$answer['form_id'] = $form_id;
 			$answer['id_question'] = $id;
-			$this->Forms->answer_question($answer);		
+			$this->Questions->answer_question($answer);		
 		}
 		
 		redirect('Form');

@@ -16,6 +16,23 @@
 
 <?php $nav_bar ?>
 
+<h3>Modifier champ descriptif</h3>
+
+<?php
+
+echo form_open('Form/modifier_details');
+
+$data = array('name' => 'details', 'rows' => 10, 'cols' => 50, 'placeholder' => 'Expliquez l\'intérêt de ce questionnaire pour le répondant');
+echo form_textarea($data);
+
+$data = array('form_id' => $form_id);
+echo form_hidden($data);
+
+echo form_submit('submit', 'Modifier');
+echo form_close();
+		
+?>
+
 <h3>Ajout d'une question</h3>
 
 <form action="<?php echo base_url()."Form/ajouter_question";?>" method="post">
