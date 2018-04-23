@@ -46,19 +46,30 @@ class Form extends CI_Controller
 	{
 		$data = array();
 		
-		if($this->session->flashdata('answers') == NULL){ $form_id = $this->input->post('form_id'); }
+		if($this->session->flashdata('answers') == NULL)
+		{ 
+			$form_id = $this->input->post('form_id'); 
+		}
+		
 		else 
 		{ 
 			$answers = $this->session->flashdata('answers');
+			$dropdown_values = $this->session->flashdata('dropdown_values');
 			$form_id = $answers['form_id']; 
-			$data['answers'] = $answers; 
-		} 
-					
-		$users = $this->Forms->get_users($form_id);	
-		$data['form_id'] = $form_id;
-		$data['users'] = $users;	
+			$data['answers'] = $answers;
+			$data['dropdown_values'] = $dropdown_values; 
+		}
+						
 		$data['nav_bar'] = $this->load->view('Nav_bar');
-									
+		
+		$data['form_id'] = $form_id;
+		
+		$questions = $this->Forms->get_form($form_id);
+		$data['questions'] = $questions;
+		
+		$users = $this->Forms->get_users($form_id);	
+		$data['users'] = $users;
+		
 		$this->load->view('Answers', $data);
 	}
 	
@@ -151,11 +162,51 @@ class Form extends CI_Controller
 	}
 	
 	public function load_data()
-	{			
+	{	
+		// Récupération des données
 		$post = $this->input->post();
-		$options = $this->input->post('options');
+		var_dump($post);
+		$users = $post['users'];
 		$form_id = $post['form_id'];
-		$answers = $this->Forms->get_user_answer($post);
+	
+		// Transformation des données
+		$fields = array_keys($post);
+		$questions_selected = array();
+		
+		for ($i = 0; $i < count($fields); $i++)
+		{
+			$result = preg_match("#^dropdown(.*)$#i", $fields[$i]);
+			if($result == True)
+			{
+				$tmp = explode('_', $fields[$i]);
+				$question_selected = $tmp[1];
+				echo $question_selected;
+				
+				if($post['dropdown_'.$question_selected] != '0')
+				{
+					$tmp2 = $fields[$i];
+					$tmp3 = $post[$tmp2];
+					$questions_selected[$question_selected] = $tmp3;
+				}
+			}		
+		}
+		
+		var_dump($questions_selected);
+		
+		$this->session->set_flashdata('dropdown_values', $questions_selected);
+		
+		// Récupération des réponses
+		$answers = array();
+		foreach($questions_selected as $question_selected)
+		{
+			foreach($users as $user)
+			{		
+				$user = $user['id'];
+				$tmp = $this->Forms->get_user_answer($form_id, $question_selected, $user);
+				$answers[$question_selected][$user] = $tmp;
+			}
+		}
+		
 		$answers['form_id'] = $form_id;
 		$this->session->set_flashdata('answers', $answers);
 		redirect('Form/reponses');

@@ -100,12 +100,18 @@ class Forms extends CI_Model
 		return $query->result_array();		 	
 	}
 	
-	public function get_user_answer($data)
-	{		
-		$select = $data['select'];
-	
-		$query = $this->db->query('SELECT * FROM r_'.$data['form_id'].' WHERE id = '.$data['options'][$select]);
-		return $query->result_array();		 	
+	public function get_user_answer($form_id, $question_selected, $user)
+	{			
+		$query = $this->db->query('SELECT '.$question_selected.'_ FROM r_'.$form_id.' WHERE id = '.$user);
+		$answer = $query->result_array();
+		
+		if(isset($answer[0]))
+		{
+			$answer = $answer[0][$question_selected.'_'];
+			return $answer;
+		}
+		
+		else { return NULL; }
 	}
 	
 	public function add_form($form_name, $form_details)
