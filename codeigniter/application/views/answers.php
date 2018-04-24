@@ -47,11 +47,9 @@ else
 	{
 		$x = $flipped_dropdown[$field];
 		$new_answers[$x] = $answers[$field];
-		$new_answers[$x]['type'] = $questions[$x]['type']; 
+		$new_answers[$x]['type'] = $questions[$x-1]['type']; 
 	}
 }
-
-//var_dump($new_answers);
 
 echo '<div class="table-responsive">';
 echo '<table class="table">';
@@ -115,10 +113,8 @@ foreach($users as $user)
 		echo '<td>';
 			if(isset($new_answers[$i][$user])){ 
 					
-				if(($new_answers[$i]['type'] == 'champ_texte') || ($new_answers[$i]['type'] == 'champ_numerique') || ($new_answers[$i]['type'] == 'echelle'))
-				{
-					echo $new_answers[$i][$user];
-				}			
+				echo $new_answers[$i][$user];
+		
 			}
 			else { echo ''; }
 		echo '</td>';

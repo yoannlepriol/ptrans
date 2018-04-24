@@ -110,13 +110,14 @@ class Forms extends CI_Model
 			if(isset($answer[0]))
 			{
 				$answer = $answer[0][$question_selected.'_'];
-				return $answer;
+				
+				if ($type == 'echelle') { return $answer.'/5'; }
+				
+				else { return $answer; }
 			}
-			
-			else { return NULL; }
 		}
 		
-		if ($type == 'choix_simple')
+		else if ($type == 'choix_simple')
 		{		
 			$req = $this->db->query("SELECT column_name FROM information_schema.columns WHERE table_name = 'r_".$form_id."' AND column_name LIKE '".$question_selected."_%'");
 			$req = $req->result_array();
@@ -137,6 +138,32 @@ class Forms extends CI_Model
 					}
 				}
 			}
+		}
+		
+		else if ($type == 'choix_multiple')
+		{		
+			$req = $this->db->query("SELECT column_name FROM information_schema.columns WHERE table_name = 'r_".$form_id."' AND column_name LIKE '".$question_selected."_%'");
+			$req = $req->result_array();
+			$list_options = '';
+			
+			for ($i = 0; $i < count($req); $i++)
+			{
+				$query = $this->db->query('SELECT '.$question_selected.'_'.$i.' FROM r_'.$form_id.' WHERE id = '.$user);
+				$answer = $query->result_array();
+				if (isset($answer[0]))
+				{
+					$value = $answer[0][$question_selected.'_'.$i];
+					if ($value == 1)
+					{
+						$choix = $i+1;
+						$query = $this->db->query('SELECT choix'.$choix.' FROM q_'.$form_id.' WHERE id = '.$question_selected);
+						$answer_text = $query->result_array();
+						if ($list_options == ''){ $list_options = $list_options.''.$answer_text[0]['choix'.$choix]; }
+						else { $list_options = $list_options.' | '.$answer_text[0]['choix'.$choix]; }
+					}
+				}
+			}
+			return $list_options;
 		}
 	}
 	
