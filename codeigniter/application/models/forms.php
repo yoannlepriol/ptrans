@@ -96,7 +96,7 @@ class Forms extends CI_Model
 	
 	public function get_users($form_id)
 	{		
-		$query = $this->db->query('SELECT id FROM users WHERE '.$form_id.' = 1 AND privilege = "user" ORDER BY id');
+		$query = $this->db->query('SELECT id FROM users WHERE q_'.$form_id.' = 1 AND privilege = "user" ORDER BY id');
 		return $query->result_array();		 	
 	}
 	

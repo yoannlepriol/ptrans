@@ -42,26 +42,15 @@ class Form extends CI_Controller
 		}
 	}
 			
-	public function reponses()
+	public function reponses($form_id)
 	{
 		$data = array();
 		
-		if($this->session->flashdata('answers') == NULL)
-		{ 
-			$form_id = $this->input->post('form_id'); 
-		}
-		
-		else 
-		{ 
-			$answers = $this->session->flashdata('answers');
-			$dropdown_values = $this->session->flashdata('dropdown_values');
-			$form_id = $answers['form_id']; 
-			$data['answers'] = $answers;
-			$data['dropdown_values'] = $dropdown_values; 
-		}
-						
-		$data['nav_bar'] = $this->load->view('Nav_bar');
-		
+		$answers = $this->session->flashdata('answers');
+		$dropdown_values = $this->session->flashdata('dropdown_values');	
+		$data['answers'] = $answers;
+		$data['dropdown_values'] = $dropdown_values; 					
+		$data['nav_bar'] = $this->load->view('Nav_bar');	
 		$data['form_id'] = $form_id;
 		
 		$questions = $this->Forms->get_form($form_id);
@@ -208,9 +197,8 @@ class Form extends CI_Controller
 			}
 		}
 		
-		$answers['form_id'] = $form_id;
 		$this->session->set_flashdata('answers', $answers);
-		redirect('Form/reponses');
+		redirect('Form/reponses/'.$form_id);
 		
 	}
 	

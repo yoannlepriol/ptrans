@@ -57,9 +57,7 @@ for ($i = 0; $i < count($forms_id); $i++)
 	echo '</div>';
 	
 	// Bouton pour afficher les réponses
-	echo form_open('Form/reponses');
-	$data = array('form_id' => $form_id);
-	echo form_hidden($data);
+	echo form_open('Form/reponses/'.$form_id);
 	echo form_submit('reponses', 'Réponses', $data);
 	echo form_close();
 	

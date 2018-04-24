@@ -20,7 +20,7 @@
 
 <?php
 
-//var_dump($questions);
+var_dump($users);
 
 $id_intitule = array();
 foreach($questions as $question)
