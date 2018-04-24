@@ -325,6 +325,13 @@ class Questions extends CI_Model
 			$this->db->query("UPDATE q_".$table." SET position = ".$new_position." WHERE id = ".$id);
 		}
 	}
-
+	
+	// On récupère le type de la question
+	public function get_question_type($form_id, $question_selected)
+	{		
+		$query = $this->db->query('SELECT type FROM q_'.$form_id.' WHERE id = '.$question_selected);
+		$type = $query->result_array();
+		return $type[0]['type'];
+	}
 }
 	

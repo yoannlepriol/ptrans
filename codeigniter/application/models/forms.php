@@ -100,18 +100,44 @@ class Forms extends CI_Model
 		return $query->result_array();		 	
 	}
 	
-	public function get_user_answer($form_id, $question_selected, $user)
-	{			
-		$query = $this->db->query('SELECT '.$question_selected.'_ FROM r_'.$form_id.' WHERE id = '.$user);
-		$answer = $query->result_array();
-		
-		if(isset($answer[0]))
+	public function get_user_answer($form_id, $question_selected, $user, $type)
+	{	
+		if(($type == 'champ_texte') || ($type == 'champ_numerique') || ($type == 'echelle'))
 		{
-			$answer = $answer[0][$question_selected.'_'];
-			return $answer;
+			$query = $this->db->query('SELECT '.$question_selected.'_ FROM r_'.$form_id.' WHERE id = '.$user);
+			$answer = $query->result_array();
+			
+			if(isset($answer[0]))
+			{
+				$answer = $answer[0][$question_selected.'_'];
+				return $answer;
+			}
+			
+			else { return NULL; }
 		}
 		
-		else { return NULL; }
+		if ($type == 'choix_simple')
+		{		
+			$req = $this->db->query("SELECT column_name FROM information_schema.columns WHERE table_name = 'r_".$form_id."' AND column_name LIKE '".$question_selected."_%'");
+			$req = $req->result_array();
+	
+			for ($i = 0; $i < count($req); $i++)
+			{
+				$query = $this->db->query('SELECT '.$question_selected.'_'.$i.' FROM r_'.$form_id.' WHERE id = '.$user);
+				$answer = $query->result_array();
+				if (isset($answer[0]))
+				{
+					$value = $answer[0][$question_selected.'_'.$i];
+					if ($value == 1)
+					{
+						$choix = $i+1;
+						$query = $this->db->query('SELECT choix'.$choix.' FROM q_'.$form_id.' WHERE id = '.$question_selected);
+						$answer_text = $query->result_array();
+						return $answer_text[0]['choix'.$choix];
+					}
+				}
+			}
+		}
 	}
 	
 	public function add_form($form_name, $form_details)

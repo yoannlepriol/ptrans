@@ -20,7 +20,7 @@
 
 <?php
 
-
+//var_dump($questions);
 
 $id_intitule = array();
 foreach($questions as $question)
@@ -30,10 +30,6 @@ foreach($questions as $question)
 	$id_intitule[$id] = $intitule;
 }
 
-function set_option($questions, $i, $id_intitule, $dropdown_values)
-{
-	
-}
 
 $new_answers = array();
 
@@ -51,10 +47,11 @@ else
 	{
 		$x = $flipped_dropdown[$field];
 		$new_answers[$x] = $answers[$field];
+		$new_answers[$x]['type'] = $questions[$x]['type']; 
 	}
 }
 
-
+//var_dump($new_answers);
 
 echo '<div class="table-responsive">';
 echo '<table class="table">';
@@ -116,8 +113,14 @@ foreach($users as $user)
 	for ($i = 1; $i < 4; $i++)
 	{
 		echo '<td>';
-			if(isset($new_answers[$i][$user])){ echo $new_answers[$i][$user]; }
-			else { echo 'null'; }
+			if(isset($new_answers[$i][$user])){ 
+					
+				if(($new_answers[$i]['type'] == 'champ_texte') || ($new_answers[$i]['type'] == 'champ_numerique') || ($new_answers[$i]['type'] == 'echelle'))
+				{
+					echo $new_answers[$i][$user];
+				}			
+			}
+			else { echo ''; }
 		echo '</td>';
 	}
 	
@@ -145,65 +148,6 @@ echo form_submit('submit', 'Confirmer');
 echo form_close();
 
 
-
-
-
-
-
-
-/*if((isset($answers)) && (isset($answers[0]))){ $answers = $answers[0]; }
-
-echo form_open('Form/load_data');
-
-$options = array();
-
-foreach($users as $user)
-{
-	$tmp = $user['id'];	
-	array_push($options, $tmp);
-}
-
-//$data = array_flip($data);
-
-echo form_dropdown('select', $options, NULL);
-
-
-$data = array('form_id' => $form_id, 'options' => $options);
-
-echo form_hidden($data);
-
-echo form_submit('submit', 'Confirmer');
-
-echo form_close();
-
-?>
-
-<?php
-
-if(isset($answers)){
-
-	$questions = array_keys($answers);
-			
-	echo '<table align="center" style="width:95%">';	
-		
-	echo '<tr>';	
-	for ($i = 0; $i < count($questions); $i++)
-	{
-		echo '<th>'.$questions[$i].'</th>';
-	}	
-	echo '</tr>';
-		
-	echo '<tr>';
-	for ($i = 0; $i < count($questions); $i++)
-	{
-		$question = $questions[$i];
-		echo '<td>'.$answers[$question].'</td>';
-	}
-	echo '</tr>';
-			
-	echo '</table>';
-
-}*/
 ?>
 
 

@@ -199,10 +199,11 @@ class Form extends CI_Controller
 		$answers = array();
 		foreach($questions_selected as $question_selected)
 		{
+			$type = $this->Questions->get_question_type($form_id, $question_selected);
 			foreach($users as $user)
 			{		
 				$user = $user['id'];
-				$tmp = $this->Forms->get_user_answer($form_id, $question_selected, $user);
+				$tmp = $this->Forms->get_user_answer($form_id, $question_selected, $user, $type);
 				$answers[$question_selected][$user] = $tmp;
 			}
 		}
