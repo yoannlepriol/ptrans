@@ -8,12 +8,15 @@
     <title>Barnsdeal</title>
     <link href="<?php echo site_url('assets/css/bootstrap.css')?>" rel="stylesheet">
 	<script src="<?php echo site_url('assets/javascript/bootstrap.bundle.js')?>"></script>
-	<style> body { padding-top: 70px; } </style>
+	<style> body { padding-top: 62px; background-color: rgb(246, 246, 246); } 
+			.main_container{ width: 900px; margin: auto; padding: 20px 0; background-color: white; min-height: 786px;}
+	</style>
 </head>
 
 <body>
-
-<h3 style="text-align: center">Vos questionnaires</h3>
+<?php $this->load->view('nav_bar'); ?>	
+<div class="main_container">
+<h3 style="text-align: center; color:#343a40; font-size:2rem;">Vos questionnaires</h3>
 
 <?php 
 
@@ -33,8 +36,8 @@ for ($i = 0; $i < count($forms_id); $i++)
 	
 	echo '<div class="col-md-3" style="padding-bottom: 15px; padding-top: 15px;">';
 	
-	if(in_array($form_id, $filled_forms)){ echo '<div class="card my_form" style="background-color: green !important;">'; }
-	else { echo '<div class="card my_form" style="background-color: orange !important;">'; }
+	if(in_array($form_id, $filled_forms)){ echo '<div class="card my_form" style="background-color:  #ba8f77; padding:10px 0;">'; }
+	else { echo '<div class="card my_form" style="background-color: #6c6f66; padding:10px 0;">'; }
 		
 	echo '<div class="form_name">';
 	echo $form_name; 
@@ -58,9 +61,14 @@ if($position==0){ echo '</div><div class="row">'; }
 
 echo '</div>';
 echo '</div>';
+echo '</div>';
 
-
-	?>
+?>
+</div>
+<script src="<?php echo site_url('assets/javascript/jquery.min.js')?>"></script>
+<script src="<?php echo site_url('assets/javascript/bootstrap.bundle.js')?>"></script>
+</body>
+</html>
 	
 
 

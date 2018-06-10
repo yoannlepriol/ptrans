@@ -6,14 +6,14 @@ class Login extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->helper('Form');
-		$this->load->library('Form_validation');
+		$this->load->library('form_validation');
 		$this->load->model('Forms');
 		$this->load->model('Users');
 	}
 	
 	public function index()
 	{
-		$this->load->view('Login');
+		$this->load->view('login');
 	}
 		
 	public function connexion()
@@ -43,13 +43,13 @@ class Login extends CI_Controller
 			redirect('Form');
 		}
 		
-		else{ redirect('Login'); }
+		else{ redirect('login'); }
 	}
 	
 	public function deconnexion()
 	{
 		session_destroy();
-		redirect('Login');
+		redirect('login');
 	}
 }
 

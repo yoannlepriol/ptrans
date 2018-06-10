@@ -7,83 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Barnsdeal</title>
     <link href="<?php echo site_url('assets/css/bootstrap.css'); ?>" rel="stylesheet">
-	<style> body { padding-top: 70px; } </style>
+    <link href="<?php echo site_url('assets/css/admin_home.css'); ?>" rel="stylesheet">
+	<style> body { padding-top: 62px; background-color: rgb(246, 246, 246); } </style>
 </head>
 
 <body>
-
-<?php $nav_bar ?>
-
-	<h3>Ajout d'un questionnaire</h3>
-
-<?php
-echo '<div class="container" style="padding-top: 30px">';
-
-	echo form_open('Form/ajouter');
 	
-	$data = array('name' => 'new_form', 'placeholder' => 'Nom du questionnaire');
-	echo form_input($data);
-	
-	$data = array('name' => 'details', 'rows' => 10, 'cols' => 50, 'placeholder' => 'Expliquez l\'intérêt de ce questionnaire pour le répondant');
-	echo form_textarea($data);
-	
-	echo form_submit('submit', 'Confirmer');
-	echo form_close();
-?>
-<hr>
-<h3>Liste des questionnaires</h3>
+	<?php $this->load->view('nav_bar'); ?>
+	<?php $this->load->view('side_bar'); ?>
 
-<?php 
+	<div class="main_container">
 
+		<?php $this->load->view($main_content); ?>
 
-echo '<div class="row">';
-
-$position = 0;
-
-$forms_id = array_keys($forms);
-
-for ($i = 0; $i < count($forms_id); $i++)
-{
-	$form_id = $forms_id[$i];
-	$form_name = $forms[$form_id];
-	$position = $position + 1;
-	if($position == 7){ $position = 0; }
+	</div>
 	
-	echo '<div class="col-md-2" style="padding-bottom: 15px; padding-top: 15px;">';
-	echo '<div class="card my_form" style="background-color: orange !important;">';
-	
-	echo '<div class="form_name">';
-	echo $form_name;
-	echo '</div>';
-	
-	// Bouton pour afficher les réponses
-	echo form_open('Form/reponses/'.$form_id);
-	echo form_submit('reponses', 'Réponses', $data);
-	echo form_close();
-	
-	// Bouton pour modifier le questionnaire
-	echo form_open('Form/modifier');
-	$data = array('modify_form' => $form_id);
-	echo form_hidden($data);
-	echo form_submit('modifier', 'Modifier');
-	echo form_close();
-	
-	// Bouton pour supprimer le questionnaire
-	echo form_open('Form/supprimer');
-	$data = array('delete_form' => $form_id);
-	echo form_hidden($data);
-	echo form_submit('supprimer', 'Supprimer');
-	echo form_close();
-	
-	echo '</div>';
-	echo '</div>';
-}
-if($position==0){ echo '</div><div class="row">'; }
-
-echo '</div>';
-echo '</div>';
-
-?>
+	<script src="<?php echo site_url('assets/javascript/jquery.min.js')?>"></script>
+	<script src="<?php echo site_url('assets/javascript/bootstrap.bundle.js')?>"></script>
 	
 </body>
 </html>

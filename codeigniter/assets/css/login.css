@@ -1,0 +1,59 @@
+.login_content{
+  height: 500px;
+  padding: 20px;
+  display: block;
+  text-align:center;
+}
+
+.login_form{
+  position: relative;
+  margin: 15px auto;
+}
+
+.login_desc{
+  position: relative;
+  margin-top:30px;
+}
+
+#submit{
+  padding-top: 40px;
+  color:wheat;
+}
+
+h1 {
+	position:relative; 
+	color:wheat; 
+	margin: 15px auto; 
+	text-align: center; 
+	font-size: 60px; 
+	padding-top:100px;
+}
+
+i {
+  color:wheat;
+  padding-right: 3px;
+}
+
+p {
+  color:wheat;
+  margin-bottom: 1px;
+}
+
+input {
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  color:#ccc;
+}
+
+body,input {
+  background-color:#343a40;
+}
+
+input[type="submit"]
+{
+    border:1px solid wheat;
+    background-color: wheat;
+    width: 230px;
+    color:#343a40;
+}

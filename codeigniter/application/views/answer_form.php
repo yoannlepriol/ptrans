@@ -8,17 +8,21 @@
     <title>Barnsdeal</title>
     <link href="<?php echo site_url('assets/css/bootstrap.css'); ?>" rel="oldest stylesheet">
 	<link href="<?php echo site_url('assets/css/full-slider.css'); ?>" rel="oldest stylesheet">
+	<script type="text/javascript">
+		window.onload = () => {
+			$("#tag-prev").hide();
+
+		}
+	</script>
 </head>
 
 <body class="form">
-
-	<?php $nav_bar ?>
-	
+	<?php $this->load->view('nav_bar'); ?>	
 	<?php 
-	
+
 	function displayQuestion($question, $form_id){
 				
-			echo '<div class="question" id="div_'.$question['id'].'">';
+			echo '<div class="answer_desr" id="div_'.$question['id'].'">';
 						
 			// AFFICHAGE DES CHAMPS TEXTES
 			if($question['type'] == "champ_texte")
@@ -55,7 +59,7 @@
 				{
 					if ($question[$element] != "") // To-Do : Afficher les résultats sur plusieurs lignes
 					{
-						$data_checkbox = array('name' => $question['id'].'_'.$i, 'value' => 1);
+						$data_checkbox = array('name' => $question['id'].'_'.$i, 'value' => 1, 'id'=>$question['id'].'_'.$i);
 						echo form_checkbox($data_checkbox);
 						$attributes = array('class' => 'label_checkbox');
 						echo form_label($question[$element], $question['id'].'_'.$i, $attributes);
@@ -136,7 +140,7 @@
 	<?php $nb_slides = count($form)+1;  ?>
 	
 	<header>
-      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
         <ol class="carousel-indicators">
 		  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active" id="indicator_0"></li>		  
 		 
@@ -156,7 +160,7 @@
 		<?php echo '<form action="'.base_url().'form/repondre_question" method="post">'; ?>
 			         
           <div class="carousel-item active" style="background-color: #343a40" id="carousel_0">
-            <div class="text_form">
+            <div class="answer_desr">
               <h3><?php echo $form_id; ?></h3>
               <p><?php echo $details['details']; ?></p>
             </div>
@@ -165,25 +169,26 @@
 		 
 		  
 <?php 	 foreach ($form as $question){ 
-			echo '<div class="carousel-item" style="background-color: #343a40" id="carousel_'.$question['position'].'"><div>';
-			displayQuestion($question, $form_id);													
+			echo '<div class="carousel-item" style="background-color: #343a40" id="carousel_'.$question['position'].'"><div style="height:100%"">';
+			displayQuestion($question, $form_id);						
 			echo '</div></div>'; 
 		  } ?>
 		  		  
 		 <div class="carousel-item" style="background-color: #343a40" id="carousel_<?php echo $nb_slides; ?>">
-            <div class="carousel-caption d-none d-md-block"> <h3>Last slide</h3> <p>Thank you for answering this form.</p> 
+            <div class="answer_desr"> <h3>Last slide</h3> <p>Thank you for answering this form.</p> 
 			<?php echo '<input type="hidden" name="form_id" value="'.$form_id.'">
 			<input type="submit" value="Confirmer"/></form>'; ?> 
-			
+
 			</div>
           </div>
 		  
         </div>
-       <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+
+       <a id="tag-prev" class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <a id="tag-next" class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
         </a>
@@ -194,6 +199,39 @@
 <script src="<?php echo site_url('assets/javascript/jquery.min.js')?>"></script>
 <script src="<?php echo site_url('assets/javascript/bootstrap.bundle.js')?>"></script>
 
+<script type="text/javascript">
+	
+
+	$(".carousel-control-next").click(function(){
+		if($("#carousel_0").attr("class") == "carousel-item active")
+			$("#tag-prev").show();
+		if($("#carousel_".concat(($(".carousel-item").length-2).toString())).attr("class") == "carousel-item active")
+			$("#tag-next").hide();
+	});
+
+	$(".carousel-control-prev").click(function(){
+		if($("#carousel_1").attr("class") == "carousel-item active")
+			$("#tag-prev").hide();
+		if($("#carousel_".concat(($(".carousel-item").length-1).toString())).attr("class") == "carousel-item active")
+			$("#tag-next").show();
+	});
+
+	$(".carousel-indicators>li").click(function(){
+		if($(this).attr("id") == "indicator_0"){
+			$("#tag-prev").hide();
+			$("#tag-next").show();
+		}
+		else if($(this).attr("id") == "indicator_".concat(($(".carousel-item").length-1).toString())){
+			$("#tag-prev").show();
+			$("#tag-next").hide();
+		}
+		else{
+			$("#tag-prev").show();
+			$("#tag-next").show();
+		}
+	});
+
+</script>
 </body>
 </html>
 

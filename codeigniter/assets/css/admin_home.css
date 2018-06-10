@@ -1,0 +1,126 @@
+.main_container{
+    width: 900px;
+    margin: auto;
+    padding: 5px 0 20px 0;
+    background-color: white;
+    min-height: 786px;
+}
+
+h3,hr{
+    margin-top: 20px;
+	margin-left: 60px;
+	margin-right:60px;
+}
+
+h3{
+    color:#343a40;
+}
+
+form{
+	padding:5px 4px;
+}
+
+input[name='reponses'],input[name='modifier'],input[name='supprimer']{
+	background-color: rgb(255,255,255,0);
+    border: 1.5px solid white;
+    color: white;
+    width: 100px;
+}
+
+
+textarea{
+	height:150px;
+}
+
+#form_name, #form_desc, #form_sub{
+	margin:5px 0;
+}
+
+.container{
+    width: 100%;
+    padding-right: 5px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: 60px;
+}
+
+body{
+	background-color: #f8f9fa;
+}
+
+input[name='submit']{
+    background-color: #d5baac;
+    color: white;
+    padding: 5px 10px;
+    width: 100px; 
+}
+
+input[value='Valider']{
+    background-color: #343a40d1;
+    color: white;
+    padding: 5px 10px;
+    width: 100px; 
+}
+
+.add_field_button{
+    background-color: #d5baac;
+    color: white;
+    padding: 5px 10px;
+    width: 173px;
+    margin-bottom: 7px;
+}
+
+input[name='new_form']{
+    width: 422px;
+}
+
+input[name='new_position']{
+    width:100px;
+}
+
+input[name='mytext[]']{
+    margin-bottom: 5px; 
+    margin-right: 5px;
+}
+
+label{
+    padding-right: 10px;
+}
+
+span{
+    font-size:1.3rem;
+}
+
+.row{
+    margin:0;
+}
+
+.form_name{
+    font-size: 1.3rem;
+}
+
+.my_form{
+    padding: 4px 0;
+}
+
+input[class='edit_supp']{
+    width:203px;
+}
+
+input[class='edit_supp']{
+    background-color: rgb(255,255,255,0);
+    color: #d5baac;
+    border: 2px solid #d5baac;
+}
+
+.question_name{
+    padding:3px 0;
+}
+
+.table-responsive{
+    max-width: 840px;
+}
+
+select{
+    max-width: 240px;
+}
